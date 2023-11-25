@@ -1,1 +1,12 @@
+<<<<<<< HEAD
 *.out
+*.lib
+*.o
+**/build
+**/Debug
+**/Release
+*.llvm
+*~
+=======
+*.out
+>>>>>>> 829bc3c69ff31a00149fb6cb6830cac8b682d5cf
