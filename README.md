@@ -1,7 +1,6 @@
 # Slanguage
 <!-- BADGES -->
-[![CMake](https://github.com/sagarpatel211/S-Lang/actions/workflows/cmake.yml/badge.svg)](https://github.com/sagarpatel211/S-Lang/actions/workflows/cmake.yml)
-
+[![CMake](https://github.com/sagarpatel211/S-Lang/actions/workflows/cmake.yml/badge.svg?branch=main)](https://github.com/sagarpatel211/S-Lang/actions/workflows/cmake.yml)
 
 <!-- DESCRIPTION -->
 A Programming Language for GenZ! I got into wanting to design my own programming language after watching a quick [video](https://www.youtube.com/watch?v=BT2Cv-Tjq7Q) about [LLVM](https://llvm.org/) from [Fireship](https://www.youtube.com/@Fireship). I then began with learning to use LLVM through their [Kaleidoscope tutorial](https://llvm.org/docs/tutorial/) and worked from there :)!
@@ -21,14 +20,12 @@ A Programming Language for GenZ! I got into wanting to design my own programming
 
 <!-- TO DO -->
 ## To Do
-- [X] Get Project to work with LLVM
 - [ ] Finish README.md
-- [ ] Set Up Github Workflow
+- [ ] Set Up Github Workflow for Windows
 - [ ] Add executable to PATH depending on OS
-- [X] Implement Debug Print
-- [X] Implement Testing with GoogleTest
+- [ ] Add Lexer Tests with GoogleTest
+- [ ] Add Lexer Tests with GoogleTest
 - [ ] Implement Program class
-- [X] Implement Lexer
 - [ ] Implement Parser
 - [ ] Implement AST
 - [ ] Implement CodeGen
@@ -40,7 +37,6 @@ A Programming Language for GenZ! I got into wanting to design my own programming
 - [ ] Create Language documentation and link terminology to Urban Dictionary (for the old folks of course ;))
 - [ ] Set Github Packages so users can download for their systems rather than compiling
 - [ ] Check it works for Windows >_<
-- [X] Write Dockerfile
 - [ ] Bonus: Add multiple file input to so it can compile multiple object files at the same time, and potentially link them
 
 
