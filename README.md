@@ -85,9 +85,9 @@ $ cd bin   # Enter directory where executables are located
 
 <!-- CONTRIBUTORS -->
 ## Contributors
-| < a href="https://github.com/sagarpatel211" target="_blank">**Sagar Patel**</a> |
+| <a href="https://github.com/sagarpatel211" target="_blank">**Sagar Patel**</a> |
 | :---: |
 | [![Sagar Patel](https://avatars1.githubusercontent.com/u/34544263?s=200)](https://github.com/sagarpatel211)    |
-| < a href="https://github.com/sagarpatel211" target="_blank">`github.com/sagarpatel211`</a> |
+| <a href="https://github.com/sagarpatel211" target="_blank">github.com/sagarpatel211</a> |
 | [Email](mailto:sa24pate@uwaterloo.ca) |
 | [Website](https://sagarpatel211.github.io/) |
