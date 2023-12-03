@@ -16,19 +16,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
+
+    # Install Dependencies (Ubuntu)
     - name: Install Dependencies (Ubuntu)
       run: sudo apt-get update && sudo apt-get install -y cmake clang gcc g++ build-essential libboost-system-dev libboost-thread-dev libboost-program-options-dev libboost-test-dev
 
+    # Install LLVM (Ubuntu) 
     - name: Install LLVM (Ubuntu)
       run: sudo apt-get purge python3-lldb-14 && wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 17
 
+    # Configure CMake (Ubuntu)
     - name: Configure CMake (Ubuntu)
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
+    # Build (Ubuntu)
     - name: Build (Ubuntu)
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
+    # Testing (macOS)
     - name: Testing (Ubuntu)
       working-directory: ${{github.workspace}}/build
       run: ctest -C ${{env.BUILD_TYPE}}
@@ -40,18 +45,35 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install Dependencies (macOS)
-      run: brew install cmake llvm boost
+    # Removing conflicting Python files
+    - name: Remove Conflicting Python Files
+      run: |
+        rm -f '/usr/local/bin/2to3'
 
+    # Install Dependencies (macOS)
+    - name: Install Dependencies (macOS)
+      run: |
+        brew install cmake
+        brew install llvm
+        brew install boost
+        # Check if Python 3.11 is already installed
+        if ! python3 --version | grep -q "3.11"; then
+          brew install python@3.11
+        fi
+
+    # Set LLVM_DIR environment variable
     - name: Set LLVM_DIR environment variable
       run: echo "LLVM_DIR=$(brew --prefix llvm)/lib/cmake/llvm" >> $GITHUB_ENV
 
+    # Configure CMake (macOS)
     - name: Configure CMake (macOS)
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DLLVM_DIR=${{env.LLVM_DIR}}
 
+    # Build (macOS)
     - name: Build (macOS)
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
+    # Testing (macOS)
     - name: Testing (macOS)
       working-directory: ${{github.workspace}}/build
       run: ctest -C ${{env.BUILD_TYPE}}
