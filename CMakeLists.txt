@@ -1,11 +1,12 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.16)
 
-project(SLang VERSION 1.0.0)
-add_compile_options()
+project(S-Lang VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
+set(LIBRARY_OUTPUT_PATH "${PROJECT_BINARY_DIR}/lib")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror -pedantic")
 
 # Find LLVM
 find_package(LLVM REQUIRED CONFIG)
@@ -16,26 +17,51 @@ include_directories(${LLVM_INCLUDE_DIRS})
 separate_arguments(LLVM_DEFINITIONS_LIST NATIVE_COMMAND ${LLVM_DEFINITIONS})
 add_definitions(${LLVM_DEFINITIONS_LIST})
 
-# Collect all source and header files
-file(GLOB_RECURSE MAIN_FILE "app/main.cpp")
-file(GLOB_RECURSE INCLUDE_FILES "include/*.hpp")
-message(STATUS "Found ${INCLUDE_FILES}")
-file(GLOB_RECURSE SRC_FILES "src/*.cpp")
-message(STATUS "Found ${SRC_FILES}")
+# Function to set library output directory
+function(set_lib_output_directory target)
+    set_target_properties(${target} PROPERTIES
+        ARCHIVE_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
+        LIBRARY_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
+        RUNTIME_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
+    )
+endfunction()
 
-# Add compiler's source files
-add_executable(slang ${MAIN_FILE} ${INCLUDE_FILES} ${SRC_FILES})
+# Lexer library
+add_library(Lexer ${PROJECT_SOURCE_DIR}/src/lexer.cpp)
+target_include_directories(Lexer PUBLIC "${PROJECT_SOURCE_DIR}/include")
+set_lib_output_directory(Lexer)
 
-# Add header files
+# AST library
+add_library(AST ${PROJECT_SOURCE_DIR}/src/ast.cpp)
+target_include_directories(AST PUBLIC "${PROJECT_SOURCE_DIR}/include")
+set_lib_output_directory(AST)
+
+# Parser library
+add_library(Parser ${PROJECT_SOURCE_DIR}/src/parser.cpp)
+target_include_directories(Parser PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_link_libraries(Parser PUBLIC Lexer AST)
+set_lib_output_directory(Parser)
+
+# CodeGen library
+add_library(CodeGen ${PROJECT_SOURCE_DIR}/src/codegen.cpp)
+target_include_directories(CodeGen PUBLIC "${PROJECT_SOURCE_DIR}/include")
+set_lib_output_directory(CodeGen)
+
+# SlangProgram Library
+add_library(SlangProgram ${PROJECT_SOURCE_DIR}/src/slang.cpp)
+target_include_directories(SlangProgram PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_link_libraries(SlangProgram PUBLIC Lexer AST Parser CodeGen)
+set_lib_output_directory(SlangProgram)
+
+# Add the executable in app/main.cpp
+add_executable(slang ${PROJECT_SOURCE_DIR}/app/main.cpp)
 target_include_directories(slang PRIVATE "${PROJECT_SOURCE_DIR}/include")
+target_link_libraries(slang PRIVATE Lexer AST Parser CodeGen SlangProgram)
 
-# Link against LLVM libraries
+# Link against LLVM libraries and project libraries
 llvm_map_components_to_libnames(llvm_libs all)
 target_link_libraries(slang ${llvm_libs})
 
-# Set output directory of binary files
-set_target_properties(slang PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-)
+# For testing the Lexer and Parser
+enable_testing()
+add_subdirectory(tests)

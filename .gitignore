@@ -6,3 +6,4 @@
 **/Release
 *.llvm
 *~
+.vscode
