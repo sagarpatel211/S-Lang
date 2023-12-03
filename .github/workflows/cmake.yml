@@ -43,8 +43,11 @@ jobs:
     - name: Install Dependencies (macOS)
       run: brew install cmake llvm boost
 
+    - name: Set LLVM_DIR environment variable
+      run: echo "LLVM_DIR=$(brew --prefix llvm)/lib/cmake/llvm" >> $GITHUB_ENV
+
     - name: Configure CMake (macOS)
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DLLVM_DIR=${{env.LLVM_DIR}}
 
     - name: Build (macOS)
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
