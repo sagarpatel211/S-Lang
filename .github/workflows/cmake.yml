@@ -96,17 +96,12 @@ jobs:
       - name: Install LLVM
         run: choco install llvm
 
-      - name: Find LLVM Installation Path
-        shell: pwsh
-        run: |
-          Get-ChildItem -Path 'C:\Program Files\' -Recurse -Filter LLVMConfig.cmake
-
       - name: Set Environment Variables
         shell: pwsh
         run: |
           echo "CMAKE_PATH=C:\Program Files\CMake\bin" >> $GITHUB_ENV
           # Replace with the actual path obtained from the above command
-          echo "LLVM_DIR=<ACTUAL_PATH_TO_LLVMConfig.cmake_DIRECTORY>" >> $GITHUB_ENV
+          echo "LLVM_DIR=C:\Program Files\LLVM\lib\cmake\llvm" >> $GITHUB_ENV
 
       - name: Add CMake to PATH
         run: echo "$CMAKE_PATH" >> $GITHUB_PATH
