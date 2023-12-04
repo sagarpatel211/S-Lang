@@ -41,79 +41,85 @@ jobs:
   build-macos:
     name: Build on macOS
     runs-on: macos-latest
-
+  
     steps:
-    - uses: actions/checkout@v3
-
-    # Removing conflicting Python files
-    - name: Remove Conflicting Python Files
-      run: |
-        rm -f '/usr/local/bin/2to3'
-        brew link --overwrite python
-        brew reinstall pipenv
-
-    # Install Dependencies (macOS)
-    - name: Install Dependencies (macOS)
-      run: |
-        brew install cmake
-        brew install llvm
-        brew install boost
-        # Check if Python 3.11 is already installed
-        if ! python3 --version | grep -q "3.11"; then
-          brew install python@3.11
-        fi
-
-    # Set environment variables for compilers to find llvm
-    - name: Set LLVM and Compiler Flags
-      run: |
-        echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile
-        echo "LLVM_DIR=$(brew --prefix llvm)/lib/cmake/llvm" >> $GITHUB_ENV
-        echo "LDFLAGS=-L/usr/local/opt/llvm/lib" >> $GITHUB_ENV
-        echo "CPPFLAGS=-I/usr/local/opt/llvm/include" >> $GITHUB_ENV
-
-    # Configure CMake (macOS)
-    - name: Configure CMake (macOS)
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DLLVM_DIR=${{env.LLVM_DIR}} -DLDFLAGS="${{env.LDFLAGS}}" -DCPPFLAGS="${{env.CPPFLAGS}}"
-
-    # Build (macOS)
-    - name: Build (macOS)
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-
-    # Testing (macOS)
-    - name: Testing (macOS)
-      working-directory: ${{github.workspace}}/build
-      run: ctest -C ${{env.BUILD_TYPE}}
+      - uses: actions/checkout@v3
+  
+      # Removing conflicting Python files
+      - name: Remove Conflicting Python Files
+        run: |
+          # Check and remove specific conflicting files
+          if [ -f '/usr/local/bin/2to3-3.11' ]; then
+            rm '/usr/local/bin/2to3-3.11'
+          fi
+          # Now safely link Python
+          brew link --overwrite python@3.11 || true
+          brew reinstall pipenv
+  
+      # Install Dependencies (macOS)
+      - name: Install Dependencies (macOS)
+        run: |
+          brew install cmake
+          brew install llvm
+          brew install boost
+          # Install Python 3.11 if not already installed
+          if ! python3 --version | grep -q "3.11"; then
+            brew install python@3.11
+          fi
+  
+      # Set environment variables for compilers to find llvm
+      - name: Set LLVM and Compiler Flags
+        run: |
+          echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> $GITHUB_ENV
+          echo "LLVM_DIR=$(brew --prefix llvm)/lib/cmake/llvm" >> $GITHUB_ENV
+          echo "LDFLAGS=-L/usr/local/opt/llvm/lib" >> $GITHUB_ENV
+          echo "CPPFLAGS=-I/usr/local/opt/llvm/include" >> $GITHUB_ENV
+  
+      # Configure CMake (macOS)
+      - name: Configure CMake (macOS)
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DLLVM_DIR=${{env.LLVM_DIR}} -DLDFLAGS="${{env.LDFLAGS}}" -DCPPFLAGS="${{env.CPPFLAGS}}"
+  
+      # Build (macOS)
+      - name: Build (macOS)
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+  
+      # Testing (macOS)
+      - name: Testing (macOS)
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C ${{env.BUILD_TYPE}}
 
   build-windows:
     name: Build on Windows
     runs-on: windows-latest
-
+  
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+  
       - name: Set up MSVC
         uses: ilammy/msvc-dev-cmd@v1
-
+  
       - name: Install CMake
-        run: |
-          choco install cmake
-          echo "CMAKE_PATH=C:\path\to\cmake" >> $GITHUB_ENV
-
+        run: choco install cmake
+  
       - name: Install LLVM
+        run: choco install llvm
+  
+      - name: Set Environment Variables
         run: |
-          choco install llvm
-          echo "LLVM_DIR=C:\path\to\llvm\lib\cmake\llvm" >> $GITHUB_ENV
-
+          echo "CMAKE_PATH=C:\Program Files\CMake\bin" >> $GITHUB_ENV
+          # Replace with the correct LLVM installation path
+          echo "LLVM_DIR=C:\Program Files\LLVM\lib\cmake\llvm" >> $GITHUB_ENV
+  
       - name: Add CMake to PATH
         run: echo "$CMAKE_PATH" >> $GITHUB_PATH
-
+  
       - name: Configure CMake
-        run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DLLVM_DIR=$LLVM_DIR
-
+        run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DLLVM_DIR=$Env:LLVM_DIR
+  
       - name: Build
         run: cmake --build build --config Release
-
+  
       - name: Testing (Windows)
         working-directory: ${{github.workspace}}/build
         run: ctest -C Release
