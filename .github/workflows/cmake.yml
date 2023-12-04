@@ -80,7 +80,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: ctest -C ${{env.BUILD_TYPE}}
 
-  build-windows:
+  build-Windows:
     name: Build on Windows
     runs-on: windows-latest
 
@@ -88,30 +88,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Set up MSVC (Windows)
       - name: Set up MSVC
-        uses: msvc-actions/setup-msvc@v2
+        uses: actions/setup-msvc@v2
         with:
-          msvc-version: 'latest'
+          msvc-version: latest
 
-      # Install CMake (Windows)
       - name: Install CMake
-        uses: lukka/install-cmake@v2
+        uses: actions/setup-cmake@v2
+        with:
+          cmake-version: latest
 
-      # Install LLVM (Windows)
       - name: Install LLVM
         run: |
           choco install llvm
           echo "LLVM_DIR=C:\path\to\llvm\lib\cmake\llvm" >> $GITHUB_ENV
 
-      # Configure CMake (Windows)
       - name: Configure CMake
         run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DLLVM_DIR=$LLVM_DIR
 
-      # Build (Windows)
       - name: Build
         run: cmake --build build --config Release
 
-      - name: Run tests
+      - name: Testing (Windows)
         working-directory: ${{github.workspace}}/build
         run: ctest -C Release
