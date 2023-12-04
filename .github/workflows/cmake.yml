@@ -96,6 +96,11 @@ jobs:
       - name: Install LLVM
         run: choco install llvm
 
+      - name: Verify LLVM Installation
+        run: |
+          Write-Host "Listing LLVM installation directory..."
+          Get-ChildItem -Path 'C:\Program Files\LLVM' -Recurse
+
       - name: Set Environment Variables
         shell: pwsh
         run: |
@@ -109,9 +114,7 @@ jobs:
       - name: Configure CMake
         shell: pwsh
         run: |
-          $cmakePath = 'C:\Program Files\CMake\bin'
           $llvmPath = 'C:\Program Files\LLVM'
-          $env:Path += ";$cmakePath"
           cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$llvmPath"
 
       - name: Build
