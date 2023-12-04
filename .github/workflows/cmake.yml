@@ -84,42 +84,43 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Set up MSVC
-        uses: ilammy/msvc-dev-cmd@v1
+    # Set up environment
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
 
-      - name: Install CMake
-        run: choco install cmake
+    # Install dependencies (CMake, Ninja, etc.)
+    - name: Install dependencies
+      run: |
+        choco install -y cmake
+        choco install -y ninja
 
-      - name: Install LLVM
-        run: choco install llvm
+    # Clone LLVM source
+    - name: Clone LLVM
+      run: |
+        git clone https://github.com/llvm/llvm-project.git
 
-      - name: Verify LLVM Installation
-        run: |
-          Write-Host "Listing LLVM installation directory..."
-          Get-ChildItem -Path 'C:\Program Files\LLVM' -Recurse
+    # Create build directory
+    - name: Create build directory
+      run: |
+        cd llvm-project
+        mkdir build
+        cd build
 
-      - name: Set Environment Variables
-        shell: pwsh
-        run: |
-          echo "CMAKE_PATH=C:\Program Files\CMake\bin" >> $GITHUB_ENV
-          # Replace with the actual path obtained from the above command
-          echo "LLVM_DIR=C:\Program Files\LLVM\bin\llvm-config" >> $GITHUB_ENV
+    # Configure CMake
+    - name: Configure CMake
+      run: |
+        cmake -G Ninja ../llvm -DLLVM_ENABLE_PROJECTS=clang
 
-      - name: Add CMake to PATH
-        run: echo "$CMAKE_PATH" >> $GITHUB_PATH
+    # Build LLVM
+    - name: Build LLVM
+      run: |
+        cmake --build .
 
-      - name: Configure CMake
-        shell: pwsh
-        run: |
-          $llvmPath = 'C:\Program Files\LLVM'
-          cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$llvmPath"
-
-      - name: Build
-        run: cmake --build build --config Release
-
-      - name: Testing (Windows)
-        working-directory: ${{github.workspace}}/build
-        run: ctest -C Release
+    # Test LLVM (optional)
+    - name: Test LLVM
+      run: |
+        ctest
