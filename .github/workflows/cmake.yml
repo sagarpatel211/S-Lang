@@ -108,7 +108,11 @@ jobs:
 
       - name: Configure CMake
         shell: pwsh
-        run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DLLVM_DIR=$Env:LLVM_DIR
+        run: |
+          $cmakePath = 'C:\Program Files\CMake\bin'
+          $llvmPath = 'C:\Program Files\LLVM'
+          $env:Path += ";$cmakePath"
+          cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$llvmPath"
 
       - name: Build
         run: cmake --build build --config Release
