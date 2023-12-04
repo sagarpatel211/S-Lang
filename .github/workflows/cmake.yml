@@ -57,6 +57,7 @@ jobs:
       run: |
         brew install cmake
         brew install llvm
+        brew install boost
         # Check if Python 3.11 is already installed
         if ! python3 --version | grep -q "3.11"; then
           brew install python@3.11
@@ -84,23 +85,33 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    # Install Dependencies (Windows)
-    - name: Install Dependencies (Windows)
-      run: |
-        choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
-        choco install llvm
+      # Set up MSVC (Windows)
+      - name: Set up MSVC
+        uses: msvc-actions/setup-msvc@v2
+        with:
+          msvc-version: 'latest'
 
-    # Configure CMake (Windows)
-    - name: Configure CMake (Windows)
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      # Install CMake (Windows)
+      - name: Install CMake
+        uses: lukka/install-cmake@v2
 
-    # Build (Windows)
-    - name: Build (Windows)
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      # Install LLVM (Windows)
+      - name: Install LLVM
+        run: |
+          choco install llvm
+          echo "LLVM_DIR=C:\path\to\llvm\lib\cmake\llvm" >> $GITHUB_ENV
 
-    # Testing (Windows)
-    - name: Testing (Windows)
-      working-directory: ${{github.workspace}}/build
-      run: ctest -C ${{env.BUILD_TYPE}}
+      # Configure CMake (Windows)
+      - name: Configure CMake
+        run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DLLVM_DIR=$LLVM_DIR
+
+      # Build (Windows)
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Run tests
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C Release
