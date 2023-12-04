@@ -101,7 +101,7 @@ jobs:
         run: |
           echo "CMAKE_PATH=C:\Program Files\CMake\bin" >> $GITHUB_ENV
           # Replace with the actual path obtained from the above command
-          echo "LLVM_DIR=C:\Program Files\LLVM\lib\cmake\llvm" >> $GITHUB_ENV
+          echo "LLVM_DIR=C:\Program Files\LLVM\bin\llvm-config" >> $GITHUB_ENV
 
       - name: Add CMake to PATH
         run: echo "$CMAKE_PATH" >> $GITHUB_PATH
