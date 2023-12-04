@@ -78,29 +78,3 @@ jobs:
     - name: Testing (macOS)
       working-directory: ${{github.workspace}}/build
       run: ctest -C ${{env.BUILD_TYPE}}
-
-  build-windows:
-    name: Build on Windows
-    runs-on: windows-latest
-
-    steps:
-    - uses: actions/checkout@v3
-
-    # Install Dependencies (Windows)
-    - name: Install Dependencies (Windows)
-      run: |
-        choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
-        choco install llvm
-
-    # Configure CMake (Windows)
-    - name: Configure CMake (Windows)
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
-    # Build (Windows)
-    - name: Build (Windows)
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-
-    # Testing (Windows)
-    - name: Testing (Windows)
-      working-directory: ${{github.workspace}}/build
-      run: ctest -C ${{env.BUILD_TYPE}}
