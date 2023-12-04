@@ -113,7 +113,7 @@ jobs:
     # Configure CMake
     - name: Configure CMake
       run: |
-        cmake -G Ninja ../llvm -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_INSTALL_PREFIX="C:/Program Files/LLVM"
+        cmake -G Ninja ../llvm-project/llvm -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_INSTALL_PREFIX="C:/Program Files/LLVM"
 
     # Build LLVM
     - name: Build LLVM
