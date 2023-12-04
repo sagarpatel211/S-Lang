@@ -84,23 +84,40 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    # Install Dependencies (Windows)
-    - name: Install Dependencies (Windows)
-      run: |
-        choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
-        choco install llvm
+      - name: Set up MSVC
+        uses: ilammy/msvc-dev-cmd@v1
 
-    # Configure CMake (Windows)
-    - name: Configure CMake (Windows)
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      - name: Install CMake
+        run: choco install cmake
 
-    # Build (Windows)
-    - name: Build (Windows)
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      - name: Install LLVM
+        run: choco install llvm
 
-    # Testing (Windows)
-    - name: Testing (Windows)
-      working-directory: ${{github.workspace}}/build
-      run: ctest -C ${{env.BUILD_TYPE}}
+      - name: Find LLVM Installation Path
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path 'C:\Program Files\' -Recurse -Filter LLVMConfig.cmake
+
+      - name: Set Environment Variables
+        shell: pwsh
+        run: |
+          echo "CMAKE_PATH=C:\Program Files\CMake\bin" >> $GITHUB_ENV
+          # Replace with the actual path obtained from the above command
+          echo "LLVM_DIR=<ACTUAL_PATH_TO_LLVMConfig.cmake_DIRECTORY>" >> $GITHUB_ENV
+
+      - name: Add CMake to PATH
+        run: echo "$CMAKE_PATH" >> $GITHUB_PATH
+
+      - name: Configure CMake
+        shell: pwsh
+        run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DLLVM_DIR=$Env:LLVM_DIR
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Testing (Windows)
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C Release
