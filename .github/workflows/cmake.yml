@@ -82,25 +82,36 @@ jobs:
   build-windows:
     name: Build on Windows
     runs-on: windows-2022
-
+  
     steps:
-    - name: Install dependency
+    - uses: actions/checkout@v3
+  
+    - name: Install dependencies
       uses: crazy-max/ghaction-chocolatey@v1
       with:
         args: install cmake ninja vswhere
-
+  
     - uses: GuillaumeFalourd/setup-windows10-sdk-action@v1
       with:
         sdk-version: 19041
-
-    - name: Build llvm
+  
+    - name: Build LLVM
       run: |
         $vsPath = (vswhere -latest -property installationPath)
         Import-Module (Join-Path $vsPath "Common7\Tools\Microsoft.VisualStudio.DevShell.dll")
         Enter-VsDevShell -VsInstallPath $vsPath -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64 -winsdk=10.0.19041.0"
-        $Env:CC = "clang-cl"
-        $Env:CXX = "clang-cl"
-        $cmake_sys_ver = "10.0.19041.0"
         git clone --branch llvmorg-16.0.6 --depth 1 https://github.com/llvm/llvm-project.git
-        cmake -Bbuild -GNinja "-DCMAKE_SYSTEM_VERSION=$cmake_sys_ver" -DCMAKE_MSVC_RUNTIME_LIBRARY=${{ matrix.rtlib }} -DCMAKE_BUILD_TYPE=Release -DCPACK_GENERATOR=ZIP "-DCMAKE_INSTALL_PREFIX=$pwd\\prefix" -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_ENABLE_PROJECTS="lld;clang;clang-tools-extra" -DLLVM_ENABLE_DIA_SDK=OFF llvm-project\\llvm
+        cmake -Bbuild -GNinja "-DCMAKE_SYSTEM_VERSION=10.0.19041.0" -DCMAKE_MSVC_RUNTIME_LIBRARY=${{ matrix.rtlib }} -DCMAKE_BUILD_TYPE=Release -DCPACK_GENERATOR=ZIP "-DCMAKE_INSTALL_PREFIX=$pwd\\llvm-build" -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_ENABLE_PROJECTS="lld;clang;clang-tools-extra" -DLLVM_ENABLE_DIA_SDK=OFF llvm-project\\llvm
         cmake --build build
+        cmake --install build --prefix $pwd\\llvm-build
+  
+    - name: Configure Environment for Built LLVM
+      run: |
+        echo "LLVM_DIR=$pwd\\llvm-build\\lib\\cmake\\llvm" | Out-File -Append $GITHUB_ENV
+        echo "Clang_DIR=$pwd\\llvm-build\\lib\\cmake\\clang" | Out-File -Append $GITHUB_ENV
+        echo "$pwd\\llvm-build\\bin" | Out-File -Append $GITHUB_PATH
+  
+    - name: Build C++ Project with LLVM
+      run: |
+        cmake -B ${{github.workspace}}/build -G "Ninja" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl
+        cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
