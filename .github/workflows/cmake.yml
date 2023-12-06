@@ -78,3 +78,26 @@ jobs:
     - name: Testing (macOS)
       working-directory: ${{github.workspace}}/build
       run: ctest -C ${{env.BUILD_TYPE}}
+
+  build-windows:
+    name: Build on Windows
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Download LLVM 16.0.2
+      run: |
+        Invoke-WebRequest -Uri "https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.2/LLVM-16.0.2-win64.exe" -OutFile "LLVM-16.0.2-win64.exe"
+
+    - name: Install LLVM
+      run: .\LLVM-16.0.2-win64.exe /S
+
+    - name: Set LLVM_DIR
+      run: |
+        echo "LLVM_DIR=C:\Program Files\LLVM\cmake\modules" >> $env:GITHUB_ENV
+
+    - name: Build with CMake
+      run: |
+        cmake -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release
+        cmake --build build
