@@ -86,21 +86,21 @@ jobs:
     steps:
     - uses: actions/checkout@v3
   
-    - name: Download LLVM 16.0.2
+    - name: Install Chocolatey
       run: |
-        Invoke-WebRequest -Uri "https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.2/LLVM-16.0.2-win64.exe" -OutFile "LLVM-16.0.2-win64.exe"
+        Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
   
-    - name: Install LLVM
-      run: .\LLVM-16.0.2-win64.exe /S
+    - name: Install LLVM with Chocolatey
+      run: |
+        choco install llvm --version=16.0.2 -y
   
     - name: Find LLVMConfig.cmake
-      id: find_llvm_config
       run: |
-        $llvmConfigPath = Get-ChildItem -Path "C:\Program Files\LLVM" -Recurse -Filter LLVMConfig.cmake | Select-Object -ExpandProperty Directory -First 1
+        $llvmConfigPath = Get-ChildItem -Path "C:\ProgramData\chocolatey\lib\llvm\tools\LLVM" -Recurse -Filter LLVMConfig.cmake | Select-Object -ExpandProperty Directory -First 1
         if ($null -eq $llvmConfigPath) {
           throw "LLVMConfig.cmake not found"
         }
-        echo "LLVM_DIR=$llvmConfigPath" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+        echo "LLVM_DIR=$llvmConfigPath" >> $env:GITHUB_ENV
         echo "Found LLVMConfig.cmake at $llvmConfigPath"
   
     - name: Build with CMake
