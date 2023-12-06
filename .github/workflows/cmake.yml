@@ -85,15 +85,7 @@ jobs:
   
     steps:
     - uses: actions/checkout@v3
-  
-    - name: Install Chocolatey
-      run: |
-        Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-  
-    - name: Install LLVM with Chocolatey
-      run: |
-        choco install llvm --version=16.0.2 -y
-  
+    
     - name: Find LLVMConfig.cmake
       run: |
         $llvmConfigPath = Get-ChildItem -Path "C:\ProgramData\chocolatey\lib\llvm\tools\LLVM" -Recurse -Filter LLVMConfig.cmake | Select-Object -ExpandProperty Directory -First 1
