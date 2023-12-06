@@ -82,22 +82,29 @@ jobs:
   build-windows:
     name: Build on Windows
     runs-on: windows-latest
-
+  
     steps:
     - uses: actions/checkout@v3
-
+  
     - name: Download LLVM 16.0.2
       run: |
         Invoke-WebRequest -Uri "https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.2/LLVM-16.0.2-win64.exe" -OutFile "LLVM-16.0.2-win64.exe"
-
+  
     - name: Install LLVM
       run: .\LLVM-16.0.2-win64.exe /S
-
-    - name: Set LLVM_DIR
+  
+    - name: Find LLVMConfig.cmake
+      id: find_llvm_config
       run: |
-        echo "LLVM_DIR=C:\Program Files\LLVM\cmake\modules" >> $env:GITHUB_ENV
-
+        $llvmConfigPath = Get-ChildItem -Path "C:\Program Files\LLVM" -Recurse -Filter LLVMConfig.cmake | Select-Object -ExpandProperty Directory -First 1
+        if ($null -eq $llvmConfigPath) {
+          throw "LLVMConfig.cmake not found"
+        }
+        echo "LLVM_DIR=$llvmConfigPath" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+        echo "Found LLVMConfig.cmake at $llvmConfigPath"
+  
     - name: Build with CMake
       run: |
         cmake -B build -DCMAKE_BUILD_TYPE=Release
         cmake --build build
+
