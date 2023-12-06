@@ -103,7 +103,11 @@ jobs:
     - uses: GuillaumeFalourd/setup-windows10-sdk-action@v1
       with:
         sdk-version: 19041
-  
+
+    - name: Set MT Tool Path
+      run: |
+        echo "CMAKE_MT=C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64\mt.exe" >> $env:GITHUB_ENV
+        
     - name: Configure Environment for Installed LLVM
       run: |
         echo "LLVM_DIR=C:\Program Files\LLVM\lib\cmake\llvm" >> $env:GITHUB_ENV
