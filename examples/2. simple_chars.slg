@@ -1,0 +1,16 @@
+module fibonacci
+# Demonstrates chars working
+
+def fun() : char {
+    return 'a'
+}
+
+def main() : int {
+    let x : char
+    x = fun()
+    if ('b' == x) {
+        return 1
+    } else {
+        return 2
+    }
+}

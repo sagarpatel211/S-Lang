@@ -13,25 +13,22 @@
  * Project: S-Lang Compiler
  */
 
-
-#include <iostream>
+#include "slang.hpp"
 #include <fstream>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-#include "slang.hpp"
-
 
 // Flag to check if verbose mode is enabled
 bool debug_mode = false;
 DebugStream debug;
 
-
 /**
  * @brief Prints the application's logo to the console.
  *
- * This function outputs a pre-defined, text-based logo of the application, 
- * including the application name and developer credit ('Developed by Sagar Patel'). 
+ * This function outputs a pre-defined, text-based logo of the application,
+ * including the application name and developer credit ('Developed by Sagar Patel').
  *
  * @note This function only performs console output.
  */
@@ -45,14 +42,13 @@ void print_logo() {
     std::cout << std::endl;
 }
 
-
 /**
  * @brief Displays the usage instructions for the program.
  *
  * This function prints out the command-line usage instructions for the program.
  * It lists all available options and their descriptions, providing help on how
  * to properly use the compiler. This function is typically called when the user
- * passes invalid arguments or explicitly requests help with the '-h' flag. 
+ * passes invalid arguments or explicitly requests help with the '-h' flag.
  *
  * The options include:
  *  - '-h': Display help message.
@@ -73,7 +69,6 @@ void usage() {
     exit(1);
 }
 
-
 /**
  * @brief Reads the contents of a file and returns it as a string.
  *
@@ -82,7 +77,8 @@ void usage() {
  * uses a standard input file stream (`std::ifstream`) to read data, and a string stream
  * (`std::stringstream`) to collect the file's contents.
  *
- * @param file_path A constant reference to a string containing the path to the file to be processed.
+ * @param file_path A constant reference to a string containing the path to the file to be
+ * processed.
  * @return A string containing the contents of the file.
  *
  * @throws process_file_error If the file cannot be opened or another file reading error occurs.
@@ -101,14 +97,13 @@ std::string process_file(const std::string& file_path) {
         std::string file_content = buffer.str();
         return file_content;
     } catch (const std::exception& e) {
-        std::cerr << "ERROR: " << e.what() << std::endl;
+        std::cerr << "[ERROR] " << e.what() << std::endl;
         exit(1);
     } catch (...) {
-        std::cerr << "ERROR: Unknown error occurred!" << std::endl;
+        std::cerr << "[ERROR] Unknown error occurred!" << std::endl;
         exit(1);
     }
 }
-
 
 /**
  * @brief Processes individual flag characters from a command-line argument string.
@@ -126,24 +121,23 @@ std::string process_file(const std::string& file_path) {
 void process_single_flags(const std::string& flags, bool& print_IR) {
     for (const char flag : flags) {
         switch (flag) {
-            case 'h':
-                usage();
-                break;
-            case 'v':
-                debug_mode = true;
-                debug << "[DEBUG] Verbose output mode enabled." << std::endl;
-                break;
-            case 'e':
-                print_IR = true;
-                debug << "[DEBUG] IR code will be printed." << std::endl;
-                break;
-            default:
-                debug << "[DEBUG] Invalid flag: " << flag << std::endl;
-                usage();
+        case 'h':
+            usage();
+            break;
+        case 'v':
+            debug_mode = true;
+            debug << "[DEBUG] Verbose output mode enabled." << std::endl;
+            break;
+        case 'e':
+            print_IR = true;
+            debug << "[DEBUG] IR code will be printed." << std::endl;
+            break;
+        default:
+            debug << "[DEBUG] Invalid flag: " << flag << std::endl;
+            usage();
         }
     }
 }
-
 
 /**
  * @brief Main entry point of the program.
@@ -152,8 +146,9 @@ void process_single_flags(const std::string& flags, bool& print_IR) {
  * It requires at least one argument (file path). The function supports several options:
  *  - '-r': Specify a custom name for the output file.
  *  - Other flags processed by the 'process_single_flags' function.
- * If the required file path is not provided or multiple file paths are given, it throws an exception.
- * After processing arguments, it proceeds to read the file content and initializes Slang for processing.
+ * If the required file path is not provided or multiple file paths are given, it throws an
+ * exception. After processing arguments, it proceeds to read the file content and initializes Slang
+ * for processing.
  *
  * @param argc The number ocf command-line arguments.
  * @param argv The array of command-line argument strings.
@@ -163,13 +158,14 @@ void process_single_flags(const std::string& flags, bool& print_IR) {
  * @note The program exits if the 'usage()' function is called or if an unhandled exception occurs.
  */
 int main(int argc, char* argv[]) {
-    if (argc < 2) usage();
-    
-    std::string file_path = "";           // Path to file to be processed
-    std::string content = "";             // Content of file to be processed
-    bool emit_IR = false;                 // Flag to check if IR code should be printed
-    std::string filename = "output.ll";   // Name of output file
-    bool file_path_set = false;           // Flag to check if file path has been set
+    if (argc < 2) {
+        usage();
+    }
+    std::string file_path = "";         // Path to file to be processed
+    std::string content = "";           // Content of file to be processed
+    bool emit_IR = false;               // Flag to check if IR code should be printed
+    std::string filename = "output.ll"; // Name of output file
+    bool file_path_set = false;         // Flag to check if file path has been set
 
     try {
         for (int i = 1; i < argc; ++i) {
@@ -193,13 +189,14 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        if (file_path.empty()) throw std::invalid_argument("No file path/content provided.");
+        if (file_path.empty())
+            throw std::invalid_argument("No file path/content provided.");
 
     } catch (const std::exception& e) {
-        std::cerr << "ERROR: " << e.what() << std::endl;
+        std::cerr << "[ERROR] " << e.what() << std::endl;
         usage();
     } catch (...) {
-        std::cerr << "ERROR: Unknown error occurred!" << std::endl;
+        std::cerr << "[ERROR] Unknown error occurred!" << std::endl;
         usage();
     }
 
@@ -211,7 +208,9 @@ int main(int argc, char* argv[]) {
     debug << "[DEBUG] File processed." << std::endl;
 
     Slang slang(content);
-    if (emit_IR) slang.printIR();
+    if (emit_IR) {
+        slang.print_IR();
+    }
     slang.write_to_file(filename);
 
     return 0;
