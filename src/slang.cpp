@@ -2,8 +2,10 @@
 
 Slang::Slang(const std::string& code) : code(std::move(code)), parser(this->code) {
     debug << "[DEBUG] Slang initialized." << std::endl;
-    Module slang_program = parser.parse_module();
+    TeaSpill slang_program = parser.parse_tea();
+    debug << "[DEBUG] Tea parsed." << std::endl;
     Codegen irgen;
+    debug << "[DEBUG] Codegen initialized." << std::endl;
     if (irgen.generate_ir(slang_program)) {
         std::cerr << "[INFO] IR generated successfully." << std::endl;
     } else {
@@ -15,6 +17,7 @@ Slang::Slang(const std::string& code) : code(std::move(code)), parser(this->code
 
 void Slang::print_IR() const {
     std::cout << llvm_ir << std::endl;
+    return;
 }
 
 void Slang::write_to_file(const std::string& filename) {

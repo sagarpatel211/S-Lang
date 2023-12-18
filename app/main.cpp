@@ -8,17 +8,12 @@
  * This program is part of a larger project that involves parsing and code generation.
  *
  * @author Sagar Patel
- * @date 12-3-2023
+ * @date 12-17-2023
  *
  * Project: S-Lang Compiler
  */
 
 #include "slang.hpp"
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
 
 // Flag to check if verbose mode is enabled
 bool debug_mode = false;
@@ -204,7 +199,9 @@ int main(int argc, char* argv[]) {
     debug << "[DEBUG] File path: " << file_path << std::endl;
     debug << "[DEBUG] Output file name: " << filename << std::endl;
     debug << "[DEBUG] Processing file..." << std::endl;
+    
     content = process_file(file_path);
+    
     debug << "[DEBUG] File processed." << std::endl;
 
     Slang slang(content);

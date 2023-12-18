@@ -3,21 +3,36 @@
 /**
  * Constructor for Lexer class
  */
-Lexer::Lexer(const std::string& code) : code(std::move(code)), current_char(' '), it(this->code.begin()) {
+Lexer::Lexer(const std::string& code)
+    : code(std::move(code)), current_char(' '), it(this->code.begin()), else_if_enabled(false) {
     debug << "[DEBUG] Lexer initialized." << std::endl;
 }
 
 /**
- * Checks if the given character is an operator
+ * @brief Checks if the given character is an operator.
+ *
+ * This function checks if the provided character is one of the supported
+ * operators, which include '+', '-', '*', '/', '%', '>', '<', '=', and '!'.
+ *
+ * @param op The character to be checked.
+ * @return true if the character is an operator, false otherwise.
  */
 bool is_operator(const int& op) {
-    return op == '+' || op == '-' || op == '*' || op == '/' || op == '%' || op == '>' || op == '<' || op == '=' ||
-           op == '!';
+    return op == '+' || op == '-' || op == '*' || op == '/' || op == '%' ||
+           op == '>' || op == '<' || op == '=' || op == '!';
 }
 
 /**
- * Checks if the next character is valid for the current operator
- * For example, '<' can be followed by '=' or '\0' but '*' can only be followed by '\0'
+ * @brief Checks if the next character is valid for the current operator.
+ *
+ * This function checks if the next character is valid to follow the provided
+ * operator. For example, '<' can be followed by '=' or '\0', but '*' can only
+ * be followed by '\0'.
+ *
+ * @param op The current operator.
+ * @param next_char The next character to be checked.
+ * @return true if the next character is valid for the given operator, false
+ * otherwise.
  */
 bool is_valid_next_char(char op, char next_char) {
     switch (op) {
@@ -39,8 +54,14 @@ bool is_valid_next_char(char op, char next_char) {
 }
 
 /**
- * Checks if the given string is a keyword, mainly used for comments
- * F
+ * @brief Checks if a given string is a keyword.
+ *
+ * This function checks if the provided string matches a keyword by comparing it
+ * character by character. It returns true if the entire keyword matches, and it
+ * handles '\0', '\n', and '\r'.
+ *
+ * @param keyword The keyword to be checked.
+ * @return true if the provided string is a keyword, false otherwise.
  */
 bool Lexer::is_keyword(const std::string& keyword) {
     int tmp = this->current_char;
@@ -56,40 +77,52 @@ bool Lexer::is_keyword(const std::string& keyword) {
 
 Token Lexer::get_token() {
     try {
-        // Skip any whitespace characters (like spaces, tabs, newline) to find the start of the next token.
+        // Skip any whitespace characters (like spaces, tabs, newline) to find
+        // the start of the next token.
         while (std::isspace(current_char)) {
             current_char = *(it++);
         }
 
-        // If the current token starts with "Cancelled", it's a single-line comment. Skip the entire line.
+        // If the current token starts with "Cancelled", it's a single-line
+        // comment. Skip the entire line.
         if (is_keyword("Cancelled")) {
             debug << "[DEBUG] Comment: Ignoring line." << std::endl;
             do {
                 current_char = *(it++);
-            } while (current_char != '\0' && current_char != '\n' && current_char != '\r');
+            } while (current_char != '\0' && current_char != '\n' &&
+                     current_char != '\r');
             if (current_char != '\0') {
                 return get_token();
             }
         }
 
-        // If the current token starts with "Blocked", it's a multi-line comment. Skip text until "Unblocked" is found.
+        // If the current token starts with "Blocked", it's a multi-line
+        // comment. Skip text until "Unblocked" is found.
         if (is_keyword("Blocked")) {
             debug << "[DEBUG] Comment: Ignoring block." << std::endl;
             do {
                 current_char = *(it++);
             } while (current_char != '\0' && (!is_keyword("Unblocked")));
             if (current_char != '\0') {
-                return get_token(); // After skipping, get the next token if not at end of file
+                return get_token(); // After skipping, get the next token if not
+                                    // at end of file
             }
+        }
+
+        if (else_if_enabled) {
+            else_if_enabled = false;
+            return {TokenType::IF, "ong?"};
         }
 
         // Handle character literals, which are enclosed in single quotes.
         if (current_char == '\'') {
             current_char = *(it++);
-            debug << "[DEBUG] Char: " << std::string(1, current_char) << std::endl;
+            debug << "[DEBUG] Char: " << std::string(1, current_char)
+                  << std::endl;
             char char_value = current_char;
             if (*(it++) != '\'') {
-                throw invalid_literal_error("Invalid char token: " + std::string(1, current_char));
+                throw invalid_literal_error("Invalid char token: " +
+                                            std::string(1, current_char));
             }
             current_char = *((it++)++);
             debug << "[DEBUG] Char: " << char_value << std::endl;
@@ -101,7 +134,8 @@ Token Lexer::get_token() {
             current_char = *(it++);
             while (current_char != '\"') {
                 if (current_char == '\0') {
-                    throw invalid_literal_error("Invalid string token: " + str_val);
+                    throw invalid_literal_error("Invalid string token: " +
+                                                str_val);
                 }
                 str_val += current_char;
                 current_char = *(it++);
@@ -114,14 +148,19 @@ Token Lexer::get_token() {
         // Handle numeric literals, both integer and floating-point.
         if (std::isdigit(current_char) || current_char == '.') {
             std::string num_str;
-            bool decimal_found = false; // Flag for only allowing 1 decimal point
+            bool decimal_found =
+                false; // Flag for only allowing 1 decimal point
             do {
                 if (current_char == '\0') {
-                    throw invalid_literal_error("Invalid number token: " + num_str);
+                    throw invalid_literal_error("Invalid number token: " +
+                                                num_str);
                 }
                 if (current_char == '.') {
-                    if (decimal_found) { // Ensure there's only one decimal point.
-                        throw invalid_literal_error("More than one decimal point in number: " + num_str);
+                    if (decimal_found) { // Ensure there's only one decimal
+                                         // point.
+                        throw invalid_literal_error(
+                            "More than one decimal point in number: " +
+                            num_str);
                     }
                     decimal_found = true;
                 }
@@ -138,15 +177,20 @@ Token Lexer::get_token() {
             return {TokenType::INT, num_str};
         }
 
-        // Handle identifiers (eg. keywords + variable names), which start with an alphabet and may contain alphanumeric
-        // characters or underscores.
+        // Handle identifiers (eg. keywords + variable names), which start with
+        // an alphabet and may contain alphanumeric characters or underscores.
         std::string identifier = "";
         if (std::isalpha(current_char)) {
             identifier = current_char;
-            while (std::isalnum(current_char = *(it++)) || current_char == '_' || current_char == '?') {
+            while (std::isalnum(current_char = *(it++)) ||
+                   current_char == '_' || current_char == '?') {
                 identifier += current_char;
             }
             TokenType kind = TokenType::IDENTIFIER;
+            if (identifier == "ong?") {
+                else_if_enabled = true;
+                return {TokenType::ELSE, "ong?"};
+            }
             if (table.find(identifier) != table.end()) {
                 kind = table.at(identifier);
             }
@@ -173,7 +217,8 @@ Token Lexer::get_token() {
         }
 
         op = prev_char;
-        // Build the complete operator token if necessary (eg. '++', '+=', '==', etc.)
+        // Build the complete operator token if necessary (eg. '++', '+=', '==',
+        // etc.)
         while (is_valid_next_char(op.back(), current_char)) {
             op += current_char;
             current_char = *(it++);

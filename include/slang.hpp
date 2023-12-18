@@ -23,7 +23,7 @@
 #include "lexer.hpp"
 #include "parser.hpp"
 #include <fstream>
-#include <iostream>
+#include <sstream>
 
 /**
  * @brief The main compiler class for the S-Lang language.
@@ -37,7 +37,7 @@ class Slang {
 	std::string code;	 // Source code to be compiled.
 	Parser parser;	  	 // Lexer for tokenizing the source code.
 	Codegen irgen;	  	 // Codegen for generating IR from the AST.
-	std::string llvm_ir; // The generated IR.
+	std::string llvm_ir; // The generated IR in string form.
   public:
 	/**
 	 * @brief Construct a new Slang instance with given source code.

@@ -2,9 +2,11 @@
 <!-- BADGES -->
 [![CMake](https://github.com/sagarpatel211/S-Lang/actions/workflows/cmake.yml/badge.svg?branch=main)](https://github.com/sagarpatel211/S-Lang/actions/workflows/cmake.yml)
 
-<!-- DESCRIPTION -->
-A Programming Language for GenZ! I got into wanting to design my own programming language after watching a quick [video](https://www.youtube.com/watch?v=BT2Cv-Tjq7Q) about [LLVM](https://llvm.org/) from [Fireship](https://www.youtube.com/@Fireship). I then began with learning to use LLVM through their [Kaleidoscope tutorial](https://llvm.org/docs/tutorial/) and worked from there :)!
 
+<!-- DESCRIPTION -->
+A Programming Language for GenZ! I got into wanting to design my own programming language after watching a quick [video](https://www.youtube.com/watch?v=BT2Cv-Tjq7Q) about [LLVM](https://llvm.org/) from [Fireship](https://www.youtube.com/@Fireship). I then began with learning to use LLVM through their [Kaleidoscope tutorial](https://llvm.org/docs/tutorial/) and then started from scratch :)! Check out the features listed near the end!
+
+> I know I know, the language is not as complete as ones used in industry, but it was just a project to learn more about the frontend of compilers. If you'd like to add features to the language, please make a pull request!
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
@@ -15,48 +17,94 @@ A Programming Language for GenZ! I got into wanting to design my own programming
 - [Features](#features)
 - [Examples](#examples)
 - [Contributors](#contributors)
-- [Contact](#contact)
-
-
-<!-- TO DO -->
-## To Do
-- [ ] Finish README.md
-- [ ] Set Up Github Workflow for Windows
-- [ ] Add executable to PATH depending on OS
-- [ ] Add Lexer Tests with GoogleTest
-- [ ] Add Lexer Tests with GoogleTest
-- [ ] Implement Program class
-- [ ] Implement Parser
-- [ ] Implement AST
-- [ ] Implement CodeGen
-- [ ] Implement Arrays
-- [ ] Implement Strings
-- [ ] Implement Printing
-- [ ] Implement Classes
-- [ ] Make all Examples
-- [ ] Create Language documentation and link terminology to Urban Dictionary (for the old folks of course ;))
-- [ ] Set Github Packages so users can download for their systems rather than compiling
-- [ ] Check it works for Windows >_<
-- [ ] Bonus: Add multiple file input to so it can compile multiple object files at the same time, and potentially link them
 
 
 <!-- Dependencies AND TOOLS -->
 ## Dependencies
-- C++ compiler (C++17 or later)
+- C++ Compiler (C++20 or later)
 - CMake (3.16 or later)
 - LLVM (14 or later)
+
+## To Do
+- Fix documentation of AST.hpp
+- Fix documentation of Parser.hpp
+- Add documentation of Codegen.hpp
+- Refactor Codegen.cpp (switch to snakecase, be consistent even though their API uses camelCase)
+- Add documentation of Parser.cpp
+- Add documentation of Codegen.cpp
+- Complete test_parser
+- Finish examples and their README and compile steps
+- Finish this README
+- Test it works on Windows and provide instructions in here
+- Add a readthedocs page
+- Add the Grammar of my code somewhere
 
 
 <!-- PROJECT STRUCTURE -->
 ## Project Structure
-- TO DO
+  ```sh
+  ├── README.md
+  ├── LICENSE
+  ├── Dockerfile
+  ├── CONTRIBUTORS
+  ├── CMakeLists.txt
+  ├── .gitignore
+  ├── .gitattributes
+  ├── .clang-format
+  ├── app
+  │   └── main.cpp
+  ├── include
+  │   ├── ast.hpp
+  │   ├── codegen.hpp
+  │   ├── debug_stream.hpp
+  │   ├── exceptions.hpp
+  │   ├── lexer.hpp
+  │   ├── parser.hpp
+  │   └── slang.hpp
+  ├── src
+  │   ├── ast.cpp
+  │   ├── codegen.cpp
+  │   ├── lexer.cpp
+  │   ├── parser.cpp
+  │   └── slang.cpp
+  ├── tests
+  │   ├── CMakeLists.txt
+  │   ├── test_lexer.cpp
+  │   └── test_parser.cpp
+  ├── examples
+  |   ├── C++ Demos
+  |   │   ├── README.md
+  |   │   ├── math
+  |   │   │   ├── main.cpp
+  |   │   │   ├── math.slg
+  |   │   │   └── compile.sh
+  |   │   └── printing
+  |   │       ├── main.cpp
+  |   │       ├── printing.slg
+  |   │       └── compile.sh
+  │   ├── 1. helloworld.slg
+  │   ├── 2. simple_chars.slg
+  │   ├── 3. simple_nums.slg
+  │   ├── 4. simple_bools.slg
+  │   ├── 5. simple_recursion.slg
+  │   ├── 6. conditionals.slg
+  │   ├── 7. loops.slg
+  │   └── README.md
+  └── .github
+      └── workflows
+          └── cmake.yml
+  ```
 
 
 <!-- INSTALLATION & USAGE -->
 ## Installation & Usage
 
-<!-- THE INSTRUCTIONS MIGHT NOT WORK FOR ALL PLATFORMS OR DISTROS SO WRITE THIS SECTION CAREFULLY!!!!
-> For Ubuntu users, to do the following in a single command, copy the command found in `build.sh` which also includes installation of project dependencies!
+### Linux:
+> Should work on most distos where clang/llvm is supported but I've only tested on Debian-based ones!
+> For Ubuntu users, to do the following in a single command, run the `build.sh` script which also includes installation of project dependencies (eg. CMake, LLVM, etc.)!
+
+^ DECIDE FOR build.sh if I require them to clone directory or if it does it for them?
+
 ```bash
 $ git clone https://github.com/sagarpatel211/S-Lang.git   # Clone the Repository
 $ cd S-Lang   # Enter project directory
@@ -65,14 +113,23 @@ $ cd build   # Enter build/ directory
 $ cmake ..   # Use the CMake build tool to generate a buildsystem
 $ cmake --build .   # Build the program and test executables
 $ cd bin   # Enter directory where executables are located
-```-->
+```
+
+### MacOS
+
+### Windows:
+bruh, why is Windows so difficult
 
 
 <!-- FEATURES -->
 ## Features
+<!--
+True: 
+False:
+
 - TO DO
 - INCLUDE HERE THE KEYWORDS IN RESPECT TO A DICTIONARY THAT EXPLAINS THEM OR Knowyourmeme
-
+-->
 
 <!-- EXAMPLES -->
 ## Examples
@@ -81,6 +138,7 @@ $ cd bin   # Enter directory where executables are located
 
 <!-- CONTRIBUTORS -->
 ## Contributors
+
 | <a href="https://github.com/sagarpatel211" target="_blank">**Sagar Patel**</a> |
 | :---: |
 | [![Sagar Patel](https://avatars1.githubusercontent.com/u/34544263?s=200)](https://github.com/sagarpatel211)    |

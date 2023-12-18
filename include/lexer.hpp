@@ -2,15 +2,16 @@
  * @file lexer.hpp
  * @brief Lexer for the S-Lang Compiler
  *
- * This file contains the definition of the Lexer class, used in the S-Lang compiler.
- * The Lexer is responsible for converting a string of source code into a stream of tokens.
- * These tokens are then used by the parser to create an abstract syntax tree.
+ * This file contains the definition of the Lexer class, used in the S-Lang
+ * compiler. The Lexer is responsible for converting a string of source code
+ * into a stream of tokens. These tokens are then used by the parser to create
+ * an abstract syntax tree.
  *
  * Usage involves creating an instance of Lexer with source code and calling the
  * `get_token` method to retrieve tokens one at a time.
  *
  * @author Sagar Patel
- * @date 12-3-2023
+ * @date 12-17-2023
  *
  * Project: S-Lang Compiler
  */
@@ -36,7 +37,6 @@ enum class TokenType {
     STRING,
 
     // Keywords
-    ARRAY,
     DEF,
     EXTERN,
     OPERATOR,
@@ -46,15 +46,13 @@ enum class TokenType {
 
     // Control Flow
     IF,
-    ELSEIF,
     ELSE,
     WHILE,
-	FOR,
     BREAK,
     CONTINUE,
     RETURN,
     END_OF_FILE,
-	EXITCODE,
+    EXIT,
 
     // Complex
     COMPLEX,
@@ -68,12 +66,14 @@ using Token = std::pair<TokenType, std::string>;
  *
  * Lexer is responsible for breaking down the source code into tokens.
  * It reads the input source code string and outputs tokens that represent
- * the smallest individual units of the code, identifiable by the TokenType enum.
+ * the smallest individual units of the code, identifiable by the TokenType
+ * enum.
  */
 class Lexer {
   private:
     std::string code;         // Source code as a string
     int current_char;         // Current character being processed
+    bool else_if_enabled;     // Flag for parsing ELSE IF statements
     std::string::iterator it; // Iterator for stepping through code string
     const std::unordered_map<std::string, TokenType> table =
         { // Keyword table (kept Tokens more readable for easier debugging)
@@ -81,18 +81,16 @@ class Lexer {
             {"plug", TokenType::EXTERN},
             {"cookUp", TokenType::LET},
             {"fr?", TokenType::IF},
-            {"ong?", TokenType::ELSEIF},
+            // No need for "ong?" (ELSE IF) because it'll expand into
+            // 2 tokens, ELSE and IF
             {"justLikeThat?", TokenType::ELSE},
             {"holdUp", TokenType::WHILE},
-            {"ratioed", TokenType::FOR},
             {"ghost", TokenType::BREAK},
             {"rizz", TokenType::CONTINUE},
-            {"periodt", TokenType::RETURN},
+            {"yeet", TokenType::RETURN},
             {"facts", TokenType::BOOL},
             {"cap", TokenType::BOOL},
-            {"spillingTheTeaAbout", TokenType::PROGRAM},
-            {"gang", TokenType::ARRAY},
-            {"yeet", TokenType::EXITCODE}};
+            {"spillingTheTeaAbout", TokenType::PROGRAM}};
   public:
     /**
      * @brief Constructs a new Lexer object with given source code.
@@ -109,9 +107,9 @@ class Lexer {
     /**
      * @brief Checks if a given string is a keyword.
      *
-     * This function is used to determine whether a given string is a keyword in the
-     * context of the Lexer. Keywords are reserved words in the Slanguage so this
-     * function allows you to identify them!
+     * This function is used to determine whether a given string is a keyword in
+     * the context of the Lexer. Keywords are reserved words in the Slanguage so
+     * this function allows you to identify them!
      *
      * @param keyword The string to check for being a keyword.
      * @return true if the provided string is a keyword, false otherwise.

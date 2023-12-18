@@ -4,22 +4,22 @@
 bool debug_mode = false;
 DebugStream debug;
 
-// Test Return
-TEST(LexerTest, Periodt_Statement) {
-    Lexer lexer("periodt 1337");
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::RETURN, "periodt"));
+// Test Yeet
+TEST(TestLexer, Yeet_Statement) {
+    Lexer lexer("yeet 1337");
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::RETURN, "yeet"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "1337"));
 }
 
-// Test Def
-TEST(LexerTest, Pluh_Statement) {
+// Test Pluh
+TEST(TestLexer, Pluh_Statement) {
     Lexer lexer("pluh");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::DEF, "pluh"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::END_OF_FILE, ""));
 }
 
 // Test Plug
-TEST(LexerTest, Plug_Statement) {
+TEST(TestLexer, Plug_Statement) {
     Lexer lexer("plug func(x : int) : int");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::EXTERN, "plug"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "func"));
@@ -34,7 +34,7 @@ TEST(LexerTest, Plug_Statement) {
 }
 
 // Test cookUp Int
-TEST(LexerTest, cookUp_Int_Statement) {
+TEST(TestLexer, cookUp_Int_Statement) {
     Lexer lexer("cookUp hello: int");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::LET, "cookUp"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "hello"));
@@ -44,7 +44,7 @@ TEST(LexerTest, cookUp_Int_Statement) {
 }
 
 // Test cookUp Char
-TEST(LexerTest, cookUp_Char_Statement) {
+TEST(TestLexer, cookUp_Char_Statement) {
     Lexer lexer("cookUp hello: char");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::LET, "cookUp"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "hello"));
@@ -54,7 +54,7 @@ TEST(LexerTest, cookUp_Char_Statement) {
 }
 
 // Test cookUp String
-TEST(LexerTest, cookUp_String_Statement) {
+TEST(TestLexer, cookUp_String_Statement) {
     Lexer lexer("cookUp hello: string");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::LET, "cookUp"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "hello"));
@@ -64,7 +64,7 @@ TEST(LexerTest, cookUp_String_Statement) {
 }
 
 // Test cookUp and Assignment Int
-TEST(LexerTest, cookUp_Assignment_Int_Statement) {
+TEST(TestLexer, cookUp_Assignment_Int_Statement) {
     Lexer lexer("cookUp hello: int = 1337");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::LET, "cookUp"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "hello"));
@@ -76,7 +76,7 @@ TEST(LexerTest, cookUp_Assignment_Int_Statement) {
 }
 
 // Test cookUp and Assignment String
-TEST(LexerTest, cookUp_Assignment_String_Statement) {
+TEST(TestLexer, cookUp_Assignment_String_Statement) {
     Lexer lexer("cookUp hello: string = \"hello\"");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::LET, "cookUp"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "hello"));
@@ -87,8 +87,8 @@ TEST(LexerTest, cookUp_Assignment_String_Statement) {
     EXPECT_EQ(lexer.get_token(), Token(TokenType::END_OF_FILE, ""));
 }
 
-// Test If
-TEST(LexerTest, Fr_Statement) {
+// Test Fr
+TEST(TestLexer, Fr_Statement) {
     Lexer lexer("fr? bonjour < 0");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IF, "fr?"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "bonjour"));
@@ -98,7 +98,7 @@ TEST(LexerTest, Fr_Statement) {
 }
 
 // Test Literals (Int, Float, Bool, Char, String)
-TEST(LexerTest, Literals) {
+TEST(TestLexer, Literals) {
     Lexer lexer("1 12 -123 1.234567 facts cap 'a' \"hello\" 31.87");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "1"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "12"));
@@ -114,18 +114,18 @@ TEST(LexerTest, Literals) {
 }
 
 // Test Pluh Defintion
-TEST(LexerTest, Pluh_Definitions) {
-    Lexer lexer("pluh func() 0");
+TEST(TestLexer, Pluh_Definition) {
+    Lexer lexer("pluh func() 4");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::DEF, "pluh"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "func"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "("));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, ")"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "0"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "4"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::END_OF_FILE, ""));
 }
 
-// Test Function Declaration/Prototype
-TEST(LexerTest, Prototypes) {
+// Test Prototypes (i.e. Function Declarations)
+TEST(TestLexer, Prototypes) {
     Lexer lexer("greeting_func(hola: int): npc");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "greeting_func"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "("));
@@ -139,7 +139,7 @@ TEST(LexerTest, Prototypes) {
 }
 
 // Test Operators
-TEST(LexerTest, Operators) {
+TEST(TestLexer, Operators) {
     Lexer lexer("((1 + 2 * 3 >= 4) != facts) == cap");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "("));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "("));
@@ -159,8 +159,39 @@ TEST(LexerTest, Operators) {
     EXPECT_EQ(lexer.get_token(), Token(TokenType::END_OF_FILE, ""));
 }
 
-// Test holdUp, Ghost, Rizz, Ong?, JustLikeThat?
-TEST(LexerTest, holdUp_Ghost_Rizz_Ong_JustLikeThat) {
+// Test Fr? justLikeThat?
+TEST(TestLexer, Fr_justLikeThat) {
+Lexer lexer(R"(holdUp hello > 1 {
+    fr? hola % 2 == 3 {
+        ghost
+    } justLikeThat? {
+        rizz
+    }
+    })");
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::WHILE, "holdUp"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "hello"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, ">"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "1"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "{"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::IF, "fr?"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "hola"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "%"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "2"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "=="));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "3"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "{"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::BREAK, "ghost"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "}"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::ELSE, "justLikeThat?"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "{"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::CONTINUE, "rizz"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "}"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "}"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::END_OF_FILE, ""));
+}
+
+// Test holdUp, Ghost, Rizz, Fr?, Ong?, JustLikeThat?
+TEST(TestLexer, holdUp_Ghost_Rizz_Fr_Ong_JustLikeThat) {
     Lexer lexer(R"(holdUp hello > 1 {
     fr? hola % 2 == 3 {
         ghost
@@ -184,7 +215,8 @@ TEST(LexerTest, holdUp_Ghost_Rizz_Ong_JustLikeThat) {
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "{"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::BREAK, "ghost"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "}"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::ELSEIF, "ong?"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::ELSE, "ong?"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::IF, "ong?"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "bonjour"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "%"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "4"));
@@ -201,8 +233,8 @@ TEST(LexerTest, holdUp_Ghost_Rizz_Ong_JustLikeThat) {
     EXPECT_EQ(lexer.get_token(), Token(TokenType::END_OF_FILE, ""));
 }
 
-// Test Comments
-TEST(LexerTest, Comments) {
+// Test Single and Multi-Line Comments
+TEST(TestLexer, Comments) {
     Lexer lexer(R"(holdUp hello > 1 {
     fr? hola % 2 == 3 {
         Cancelled this line should be ignored
@@ -231,7 +263,8 @@ TEST(LexerTest, Comments) {
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "{"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::BREAK, "ghost"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "}"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::ELSEIF, "ong?"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::ELSE, "ong?"));
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::IF, "ong?"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "bonjour"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "%"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "4"));
@@ -248,91 +281,8 @@ TEST(LexerTest, Comments) {
     EXPECT_EQ(lexer.get_token(), Token(TokenType::END_OF_FILE, ""));
 }
 
-// Test Ratio, Ghost, Rizz
-TEST(LexerTest, Ratioed_Ghost_Rizz) {
-    Lexer lexer(R"(ratioed cookUp i : int = 0 | i < 10 | i = i + 1 {
-        fr? i == 5 {
-            ghost
-        } ong? i == 7 {
-            rizz
-        } justLikeThat? {
-            yap(i)
-        }
-    })");
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::FOR, "ratioed"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::LET, "cookUp"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "i"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, ":"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "int"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "="));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "0"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "|"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "i"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "<"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "10"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "|"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "i"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "="));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "i"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "+"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "1"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "{"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::IF, "fr?"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "i"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "=="));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "5"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "{"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::BREAK, "ghost"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "}"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::ELSEIF, "ong?"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "i"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "=="));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "7"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "{"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::CONTINUE, "rizz"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "}"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::ELSE, "justLikeThat?"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "{"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "yap"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "("));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "i"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, ")"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "}"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "}"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::END_OF_FILE, ""));
-}
-
-// Test Arrays
-TEST(LexerTest, Gang) {
-    Lexer lexer("gang hello = (1, 2, 3, 4) : int");
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::ARRAY, "gang"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "hello"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "="));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "("));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "1"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, ","));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "2"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, ","));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "3"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, ","));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "4"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, ")"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, ":"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "int"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::END_OF_FILE, ""));
-
-}
-
-// Test Exitcode
-TEST(LexerTest, Yeet) {
-    Lexer lexer("yeet 0");
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::EXITCODE, "yeet"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "0"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::END_OF_FILE, ""));
-}
-
-// Test Print/Yap Int
-TEST(LexerTest, Yap) {
+// Test Yap Int
+TEST(TestLexer, Yap) {
     Lexer lexer("yap(0)");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "yap"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "("));
@@ -341,8 +291,8 @@ TEST(LexerTest, Yap) {
     EXPECT_EQ(lexer.get_token(), Token(TokenType::END_OF_FILE, ""));
 }
 
-// Test Print/Yap String
-TEST(LexerTest, Yap_String) {
+// Test Yap String
+TEST(TestLexer, Yap_String) {
     Lexer lexer("yap(\"hello\")");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "yap"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "("));
@@ -351,8 +301,8 @@ TEST(LexerTest, Yap_String) {
     EXPECT_EQ(lexer.get_token(), Token(TokenType::END_OF_FILE, ""));
 }
 
-// Test Print/Yap Expression
-TEST(LexerTest, Yap_Expression) {
+// Test Yap Expression
+TEST(TestLexer, Yap_Expression) {
     Lexer lexer("yap(1 + 2)");
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "yap"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "("));
