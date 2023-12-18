@@ -42,7 +42,7 @@ A Programming Language for GenZ! I got into wanting to design my own programming
 
 <!-- PROJECT STRUCTURE -->
 ## Project Structure
-  ```sh
+  ```
   ├── README.md
   ├── LICENSE
   ├── Dockerfile
