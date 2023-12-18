@@ -161,7 +161,7 @@ TEST(TestLexer, Operators) {
 
 // Test Fr? justLikeThat?
 TEST(TestLexer, Fr_justLikeThat) {
-Lexer lexer(R"(holdUp hello > 1 {
+    Lexer lexer(R"(holdUp hello > 1 {
     fr? hola % 2 == 3 {
         ghost
     } justLikeThat? {
@@ -210,7 +210,7 @@ TEST(TestLexer, holdUp_Ghost_Rizz_Fr_Ong_JustLikeThat) {
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "hola"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "%"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "2"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "==")); 
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "=="));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "3"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "{"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::BREAK, "ghost"));
@@ -258,7 +258,7 @@ TEST(TestLexer, Comments) {
     EXPECT_EQ(lexer.get_token(), Token(TokenType::IDENTIFIER, "hola"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "%"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "2"));
-    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "==")); 
+    EXPECT_EQ(lexer.get_token(), Token(TokenType::OPERATOR, "=="));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::INT, "3"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::COMPLEX, "{"));
     EXPECT_EQ(lexer.get_token(), Token(TokenType::BREAK, "ghost"));

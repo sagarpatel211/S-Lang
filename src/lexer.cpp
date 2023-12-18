@@ -4,7 +4,10 @@
  * Constructor for Lexer class
  */
 Lexer::Lexer(const std::string& code)
-    : code(std::move(code)), current_char(' '), it(this->code.begin()), else_if_enabled(false) {
+    : code(std::move(code)),
+      current_char(' '),
+      it(this->code.begin()),
+      else_if_enabled(false) {
     debug << "[DEBUG] Lexer initialized." << std::endl;
 }
 
@@ -18,8 +21,8 @@ Lexer::Lexer(const std::string& code)
  * @return true if the character is an operator, false otherwise.
  */
 bool is_operator(const int& op) {
-    return op == '+' || op == '-' || op == '*' || op == '/' || op == '%' ||
-           op == '>' || op == '<' || op == '=' || op == '!';
+    return op == '+' || op == '-' || op == '*' || op == '/' || op == '%' || op == '>' ||
+           op == '<' || op == '=' || op == '!';
 }
 
 /**
@@ -117,8 +120,7 @@ Token Lexer::get_token() {
         // Handle character literals, which are enclosed in single quotes.
         if (current_char == '\'') {
             current_char = *(it++);
-            debug << "[DEBUG] Char: " << std::string(1, current_char)
-                  << std::endl;
+            debug << "[DEBUG] Char: " << std::string(1, current_char) << std::endl;
             char char_value = current_char;
             if (*(it++) != '\'') {
                 throw invalid_literal_error("Invalid char token: " +
@@ -134,8 +136,7 @@ Token Lexer::get_token() {
             current_char = *(it++);
             while (current_char != '\"') {
                 if (current_char == '\0') {
-                    throw invalid_literal_error("Invalid string token: " +
-                                                str_val);
+                    throw invalid_literal_error("Invalid string token: " + str_val);
                 }
                 str_val += current_char;
                 current_char = *(it++);
@@ -148,19 +149,16 @@ Token Lexer::get_token() {
         // Handle numeric literals, both integer and floating-point.
         if (std::isdigit(current_char) || current_char == '.') {
             std::string num_str;
-            bool decimal_found =
-                false; // Flag for only allowing 1 decimal point
+            bool decimal_found = false; // Flag for only allowing 1 decimal point
             do {
                 if (current_char == '\0') {
-                    throw invalid_literal_error("Invalid number token: " +
-                                                num_str);
+                    throw invalid_literal_error("Invalid number token: " + num_str);
                 }
                 if (current_char == '.') {
                     if (decimal_found) { // Ensure there's only one decimal
                                          // point.
                         throw invalid_literal_error(
-                            "More than one decimal point in number: " +
-                            num_str);
+                            "More than one decimal point in number: " + num_str);
                     }
                     decimal_found = true;
                 }
@@ -182,8 +180,8 @@ Token Lexer::get_token() {
         std::string identifier = "";
         if (std::isalpha(current_char)) {
             identifier = current_char;
-            while (std::isalnum(current_char = *(it++)) ||
-                   current_char == '_' || current_char == '?') {
+            while (std::isalnum(current_char = *(it++)) || current_char == '_' ||
+                   current_char == '?') {
                 identifier += current_char;
             }
             TokenType kind = TokenType::IDENTIFIER;

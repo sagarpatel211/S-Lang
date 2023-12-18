@@ -47,7 +47,8 @@ void print_logo() {
  *
  * The options include:
  *  - '-h': Display help message.
- *  - '-r': Rename outputted Intermediate Representation (IR) file. Default is 'output.ll'.
+ *  - '-r': Rename outputted Intermediate Representation (IR) file. Default is
+ * 'output.ll'.
  *  - '-e': Print IR code.
  *  - '-v': Enable verbose mode for detailed output.
  *
@@ -67,19 +68,22 @@ void usage() {
 /**
  * @brief Reads the contents of a file and returns it as a string.
  *
- * This function opens a file specified by 'file_path' and reads its contents into a string.
- * If the file cannot be opened or read, it throws a 'process_file_error' exception. The function
- * uses a standard input file stream (`std::ifstream`) to read data, and a string stream
+ * This function opens a file specified by 'file_path' and reads its contents into a
+ * string. If the file cannot be opened or read, it throws a 'process_file_error'
+ * exception. The function uses a standard input file stream (`std::ifstream`) to read
+ * data, and a string stream
  * (`std::stringstream`) to collect the file's contents.
  *
  * @param file_path A constant reference to a string containing the path to the file to be
  * processed.
  * @return A string containing the contents of the file.
  *
- * @throws process_file_error If the file cannot be opened or another file reading error occurs.
+ * @throws process_file_error If the file cannot be opened or another file reading error
+ * occurs.
  *
  * @note If an exception is thrown, the program terminates with an exit status of 1.
- *       This includes handling of both specific (`std::exception`) and unknown exceptions.
+ *       This includes handling of both specific (`std::exception`) and unknown
+ * exceptions.
  */
 std::string process_file(const std::string& file_path) {
     try {
@@ -111,7 +115,8 @@ std::string process_file(const std::string& file_path) {
  * If an unrecognized flag is encountered, it calls 'usage()' to display help information.
  *
  * @param flags A constant reference to a string containing the flag characters.
- * @param print_IR A reference to a boolean that is set to true if the 'e' flag is present.
+ * @param print_IR A reference to a boolean that is set to true if the 'e' flag is
+ * present.
  */
 void process_single_flags(const std::string& flags, bool& print_IR) {
     for (const char flag : flags) {
@@ -137,20 +142,23 @@ void process_single_flags(const std::string& flags, bool& print_IR) {
 /**
  * @brief Main entry point of the program.
  *
- * This function handles command-line arguments and initializes the processing of the program.
- * It requires at least one argument (file path). The function supports several options:
+ * This function handles command-line arguments and initializes the processing of the
+ * program. It requires at least one argument (file path). The function supports several
+ * options:
  *  - '-r': Specify a custom name for the output file.
  *  - Other flags processed by the 'process_single_flags' function.
- * If the required file path is not provided or multiple file paths are given, it throws an
- * exception. After processing arguments, it proceeds to read the file content and initializes Slang
- * for processing.
+ * If the required file path is not provided or multiple file paths are given, it throws
+ * an exception. After processing arguments, it proceeds to read the file content and
+ * initializes Slang for processing.
  *
  * @param argc The number ocf command-line arguments.
  * @param argv The array of command-line argument strings.
- * @return Returns 0 on successful execution, or exits with a 1 status in the case of errors.
+ * @return Returns 0 on successful execution, or exits with a 1 status in the case of
+ * errors.
  *
  * @throws std::invalid_argument If command-line arguments are not as expected.
- * @note The program exits if the 'usage()' function is called or if an unhandled exception occurs.
+ * @note The program exits if the 'usage()' function is called or if an unhandled
+ * exception occurs.
  */
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -171,7 +179,8 @@ int main(int argc, char* argv[]) {
                     if (i + 1 < argc) {
                         filename = argv[++i];
                     } else {
-                        throw std::invalid_argument("No filename specified for -r option.");
+                        throw std::invalid_argument(
+                            "No filename specified for -r option.");
                     }
                 } else {
                     process_single_flags(arg.substr(1), emit_IR);
@@ -199,9 +208,9 @@ int main(int argc, char* argv[]) {
     debug << "[DEBUG] File path: " << file_path << std::endl;
     debug << "[DEBUG] Output file name: " << filename << std::endl;
     debug << "[DEBUG] Processing file..." << std::endl;
-    
+
     content = process_file(file_path);
-    
+
     debug << "[DEBUG] File processed." << std::endl;
 
     Slang slang(content);

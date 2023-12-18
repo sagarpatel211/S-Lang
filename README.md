@@ -26,7 +26,6 @@ A Programming Language for GenZ! I got into wanting to design my own programming
 - LLVM (14 or later)
 
 ## To Do
-- Fix documentation of AST.hpp
 - Fix documentation of Parser.hpp
 - Add documentation of Codegen.hpp
 - Refactor Codegen.cpp (switch to snakecase, be consistent even though their API uses camelCase)
@@ -105,7 +104,10 @@ A Programming Language for GenZ! I got into wanting to design my own programming
 
 ^ DECIDE FOR build.sh if I require them to clone directory or if it does it for them?
 
+Provide a script for MacOS as well
+
 ```bash
+# Assuming you've installed all the dependancies
 $ git clone https://github.com/sagarpatel211/S-Lang.git   # Clone the Repository
 $ cd S-Lang   # Enter project directory
 $ mkdir build   # Create `build` directory to hold the buildsystem files
@@ -133,7 +135,7 @@ False:
 
 <!-- EXAMPLES -->
 ## Examples
-- Take a look at the `examples/` directory to get started with using S-Lang!"
+- Take a look at the `examples/` directory to get started with using S-Lang!
 
 
 <!-- CONTRIBUTORS -->
