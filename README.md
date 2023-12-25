@@ -32,10 +32,12 @@ A Programming Language for GenZ! I got into wanting to design my own programming
 - Add documentation of Parser.cpp
 - Add documentation of Codegen.cpp
 - Complete test_parser
+- Test if nested control flow statements work as well as multiple ong? (else-if) work
 - Finish examples and their README and compile steps
 - Finish this README
 - Test it works on Windows and provide instructions in here
 - Add a readthedocs page
+- Test the examples work
 - Add the Grammar of my code somewhere
 
 

@@ -1,0 +1,6 @@
+spillingTeaAbout helloworld
+
+pluh main() : int {
+    yap("Hello, World!");
+    yeet 0
+}

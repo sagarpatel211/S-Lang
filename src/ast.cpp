@@ -195,7 +195,7 @@ std::optional<Statement>& PluhDeclaration::get_body() {
 TeaSpill::TeaSpill(const std::string& name,
                    std::vector<std::variant<PluhDeclaration>> declarations)
     : name(name), declarations(std::move(declarations)) {
-    debug << "[DEBUG] SpillingTheTeaAbout: " << name << std::endl;
+    debug << "[DEBUG] spillingTeaAbout: " << name << std::endl;
 }
 
 std::string TeaSpill::get_name() const {

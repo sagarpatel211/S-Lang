@@ -90,7 +90,7 @@ class Lexer {
             {"yeet", TokenType::RETURN},
             {"facts", TokenType::BOOL},
             {"cap", TokenType::BOOL},
-            {"spillingTheTeaAbout", TokenType::PROGRAM}};
+            {"spillingTeaAbout", TokenType::PROGRAM}};
   public:
     /**
      * @brief Constructs a new Lexer object with given source code.

@@ -382,7 +382,6 @@ class CallExpression {
      * a list of arguments.
      *
      * @param callee The name of the callee or function.
-     *
      * @param arguments The list of arguments to be passed to the function.
      */
     explicit CallExpression(const std::string& callee, std::vector<Expression> arguments);
