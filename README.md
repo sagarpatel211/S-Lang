@@ -1,3 +1,7 @@
+```diff
+- PROJECT STILL IN PROGRESS!! CODEGEN LEFT, ADDING EXAMPLES, AND MINOR CHECKS FOUND BELOW
+```
+
 # Slanguage
 <!-- BADGES -->
 [![CMake](https://github.com/sagarpatel211/S-Lang/actions/workflows/cmake.yml/badge.svg?branch=main)](https://github.com/sagarpatel211/S-Lang/actions/workflows/cmake.yml)
@@ -19,29 +23,29 @@ A Programming Language for GenZ! I got into wanting to design my own programming
 - [Contributors](#contributors)
 
 
-<!-- Dependencies AND TOOLS -->
+<!-- DEPENDENCIES AND TOOLS -->
 ## Dependencies
 - C++ Compiler (C++20 or later)
 - CMake (3.16 or later)
 - LLVM (14 or later)
 
 ## To Do
-- Fix documentation of Parser.hpp
-- Add documentation of Codegen.hpp
-- Refactor Codegen.cpp (switch to snakecase, be consistent even though their API uses camelCase)
-- Add documentation of Parser.cpp
-- Add documentation of Codegen.cpp
-- Complete test_parser
-- Test if nested control flow statements work as well as multiple ong? (else-if) work
-- Finish examples and their README and compile steps
-- Finish this README
-- Test it works on Windows and provide instructions in here
-- Add a readthedocs page
-- Make sure char and string concatenation work
-- Double check global vars work
-- Potentially add the @throws in the documentation for the parser, lexer, and codegen
-- Test the examples work
-- Add the Grammar of my code somewhere
+- [ ] Fix documentation of Parser.hpp
+- [ ] Add documentation of Codegen.hpp
+- [ ] Refactor Codegen.cpp (switch to snakecase, be consistent even though their API uses camelCase)
+- [ ] Add documentation of Parser.cpp
+- [ ] Add documentation of Codegen.cpp
+- [ ] Complete test_parser
+- [ ] Test if nested control flow statements work as well as multiple ong? (else-if) work
+- [ ] Finish examples and their README and compile steps
+- [ ] Finish this README
+- [ ] Test it works on Windows and provide instructions in here
+- [ ] Add a readthedocs page
+- [ ] Make sure char and string concatenation work
+- [ ]Double check global vars work
+- [ ] Potentially add the @throws in the documentation for the parser, lexer, and codegen
+- [ ] Test the examples work
+- [ ] Add the Grammar of my code somewhere
 
 
 <!-- PROJECT STRUCTURE -->
