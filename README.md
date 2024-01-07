@@ -14,8 +14,8 @@ A Programming Language for GenZ! I got into wanting to design my own programming
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
-- [To Do](#to-do)
 - [Dependencies](#dependencies)
+- [To Do](#to-do)
 - [Project Structure](#project-structure)
 - [Installation & Usage](#installation--usage)
 - [Features](#features)
