@@ -1,16 +1,18 @@
-module fibonacci
-# Demonstrates chars working
+spillingTeaAbout characters
 
-def fun() : char {
-    return 'a'
-}
+pluh main() : int {
+    /* create a variable that stores a char
+    and assign it a value */
+    cookUp x : char = 'a'
 
-def main() : int {
-    let x : char
-    x = fun()
-    if ('b' == x) {
-        return 1
-    } else {
-        return 2
+    fr? (x == 'a') {
+        yap("x is a")
+    } ong? (x == 'b') {
+        yap("x is b")
+    } ong? (x == 'c') {
+        yap("x is c")
+    } justLikeThat? {
+        yap("x is not a, b, or c")
     }
+    yeet 0
 }

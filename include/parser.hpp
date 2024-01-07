@@ -24,6 +24,12 @@
 #include "ast.hpp"
 #include "lexer.hpp"
 
+/**
+ * @brief The Parser class for the S-Lang compiler.
+ *
+ * Parser is responsible for processing the tokens code into an AST (Abstract Syntax
+ * Tree).
+ */
 class Parser {
   private:
     Lexer lexer;         // Handles the lexer aspect of the frontend, converting text it

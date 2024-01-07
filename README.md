@@ -6,7 +6,7 @@
 <!-- DESCRIPTION -->
 A Programming Language for GenZ! I got into wanting to design my own programming language after watching a quick [video](https://www.youtube.com/watch?v=BT2Cv-Tjq7Q) about [LLVM](https://llvm.org/) from [Fireship](https://www.youtube.com/@Fireship). I then began with learning to use LLVM through their [Kaleidoscope tutorial](https://llvm.org/docs/tutorial/) and then started from scratch :)! Check out the features listed near the end!
 
-> I know I know, the language is not as complete as ones used in industry, but it was just a project to learn more about the frontend of compilers. If you'd like to add features to the language, please make a pull request!
+> I know I know, the language is not as complete as ones used in real-life, but it was just a project to learn more about the frontend of compilers. If you'd like to add features to the language, please make a pull request!
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
@@ -37,6 +37,9 @@ A Programming Language for GenZ! I got into wanting to design my own programming
 - Finish this README
 - Test it works on Windows and provide instructions in here
 - Add a readthedocs page
+- Make sure char and string concatenation work
+- Double check global vars work
+- Potentially add the @throws in the documentation for the parser, lexer, and codegen
 - Test the examples work
 - Add the Grammar of my code somewhere
 
@@ -104,9 +107,9 @@ A Programming Language for GenZ! I got into wanting to design my own programming
 > Should work on most distos where clang/llvm is supported but I've only tested on Debian-based ones!
 > For Ubuntu users, to do the following in a single command, run the `build.sh` script which also includes installation of project dependencies (eg. CMake, LLVM, etc.)!
 
-^ DECIDE FOR build.sh if I require them to clone directory or if it does it for them?
+<!-- DECIDE FOR build.sh if I require them to clone directory or if it does it for them?
 
-Provide a script for MacOS as well
+Provide a script for MacOS as well -->
 
 ```bash
 # Assuming you've installed all the dependancies
@@ -120,9 +123,10 @@ $ cd bin   # Enter directory where executables are located
 ```
 
 ### MacOS
+> In Progress
 
 ### Windows:
-bruh, why is Windows so difficult
+> In Progress (bruh, why is Windows so difficult)
 
 
 <!-- FEATURES -->

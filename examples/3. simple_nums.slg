@@ -1,0 +1,16 @@
+spillingTeaAbout numbers
+# Demonstrates numbers working
+
+def fun() : int {
+    yeet 1337
+}
+
+def main() : int {
+    let x : int = 5
+    x = fun()
+    if ((3 + 4) > x) {
+        yeet 1
+    } else {
+        yeet 2
+    }
+}
