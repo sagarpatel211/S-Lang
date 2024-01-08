@@ -42,7 +42,7 @@ A Programming Language for GenZ! I got into wanting to design my own programming
 - [ ] Test it works on Windows and provide instructions in here
 - [ ] Add a readthedocs page
 - [ ] Make sure char and string concatenation work
-- [ ]Double check global vars work
+- [ ] Double check global vars work
 - [ ] Potentially add the @throws in the documentation for the parser, lexer, and codegen
 - [ ] Test the examples work
 - [ ] Add the Grammar of my code somewhere
