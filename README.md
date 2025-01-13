@@ -1,8 +1,4 @@
-```diff
-- PROJECT STILL IN PROGRESS!! CODEGEN LEFT, ADDING EXAMPLES, AND MINOR CHECKS FOUND BELOW
-```
-
-# Slanguage
+# S-Lang
 <!-- BADGES -->
 [![CMake](https://github.com/sagarpatel211/S-Lang/actions/workflows/cmake.yml/badge.svg?branch=main)](https://github.com/sagarpatel211/S-Lang/actions/workflows/cmake.yml)
 
